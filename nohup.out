@@ -1,0 +1,9 @@
+MESA-INTEL: warning: Ivy Bridge Vulkan support is incomplete
+libva error: /usr/lib/x86_64-linux-gnu/dri/iHD_drv_video.so init failed
+[90m[main 2025-06-26T19:12:49.728Z][0m updateURL https://api2.cursor.sh/updates/api/update/linux-x64/cursor/0.50.5/bee0a32e045629df36864a563f8a8093ca37cf10adf52e2f10c5c5cea0a78802/stable
+[90m[main 2025-06-26T19:12:49.743Z][0m update#setState idle
+[6241:0626/201252.294699:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!
+[6241:0626/201254.755854:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 2 times!
+[6241:0626/201256.988609:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 3 times!
+[90m[main 2025-06-26T19:13:19.748Z][0m update#setState checking for updates
+[90m[main 2025-06-26T19:13:23.154Z][0m update#setState ready
