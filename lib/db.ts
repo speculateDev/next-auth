@@ -14,7 +14,7 @@ import { config } from "dotenv";
 
 config({ path: "../.env" });
 
-console.log("test: ", process.env.test);
+console.log("test-env: ", process.env.test);
 
 declare global {
   var sql: ReturnType<typeof neon> | undefined;
@@ -27,7 +27,11 @@ if (!process.env.DATABASE_URL) {
 
 // console.log("url: ", process.env.DATABASE_URL);
 
-export const sql = globalThis.sql || neon(process.env.DATABASE_URL);
+export const sql =
+  globalThis.sql ||
+  neon(process.env.DATABASE_URL, {
+    fetchOptions: { timeout: 20000 }, // 20 seconds
+  });
 
 if (process.env.NODE_ENV !== "production") {
   globalThis.sql = sql;
