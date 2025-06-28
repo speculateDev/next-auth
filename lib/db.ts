@@ -12,7 +12,9 @@
 import { neon } from "@neondatabase/serverless";
 import { config } from "dotenv";
 
-config();
+config({ path: "../.env" });
+
+console.log("test: ", process.env.test);
 
 declare global {
   var sql: ReturnType<typeof neon> | undefined;
@@ -22,6 +24,8 @@ declare global {
 if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL is not defined in the environment variables.");
 }
+
+// console.log("url: ", process.env.DATABASE_URL);
 
 export const sql = globalThis.sql || neon(process.env.DATABASE_URL);
 
