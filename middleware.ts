@@ -6,14 +6,38 @@ import {
   authRoutes,
   publicRoutes,
 } from "@/routes";
+import { NextResponse } from "next/server";
 
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
+  const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
-  console.log("ROUTE: ", req.nextUrl.pathname);
-  console.log("IS LOGGED IN: ", isLoggedIn);
+  // console.log(nextUrl);
+
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+  if (isApiAuthRoute) {
+    return null;
+  }
+
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return NextResponse.redirect(
+        new URL(DEFAULT_LOGIN_REDIRECT, nextUrl.origin)
+      );
+    }
+    return null;
+  }
+
+  if (!isLoggedIn && !isPublicRoute) {
+    return NextResponse.redirect(new URL("auth/login", nextUrl.origin));
+  }
+
+  return null;
 });
 
 export const config = {
