@@ -23,12 +23,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  try {
-    const result = await sql`SELECT 1`;
-    console.log("Connection successful:", result);
-  } catch (error) {
-    console.error("Connection failed:", error);
-  }
+  // try {
+  //   const result = await sql`SELECT 1`;
+  //   console.log("Connection successful:", result);
+  // } catch (error) {
+  //   console.error("Connection failed:", error);
+  // }
 
   return (
     <html lang="en">
