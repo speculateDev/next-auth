@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import authConfig from "./auth.config";
 import NeonAdapter from "@auth/neon-adapter";
-import { pool } from "./lib/db";
+import { pool, sql } from "./lib/db";
 import { getUserById } from "./data/user";
 import { User } from "./schemas";
 
@@ -18,6 +18,14 @@ declare module "next-auth" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  events: {
+    async linkAccount({ user }) {
+      await sql`UPDATE users SET "emailVerified" = ${new Date()} WHERE id = ${
+        user.id
+      } RETURNING *`;
+    },
+  },
+
   callbacks: {
     async session({ session, token }) {
       if (token.sub && session.user) {
