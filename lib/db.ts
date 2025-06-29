@@ -10,6 +10,9 @@
 //   globalThis.prisma = db;
 // }
 import { neon, Pool } from "@neondatabase/serverless";
+// import { config } from "dotenv";
+
+// config({ path: "../.env" });
 
 console.log("test-env: ", process.env.test);
 

@@ -14,6 +14,7 @@ async function initDB() {
         "emailVerified" TIMESTAMPTZ,
         image TEXT,
         password VARCHAR(255),
+        role VARCHAR DEFAULT 'user' CHECK (role IN ('user', 'admin')),
 
         PRIMARY KEY (id)
     );
