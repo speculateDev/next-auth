@@ -9,15 +9,13 @@
 // if (process.env.NODE_ENV !== "production") {
 //   globalThis.prisma = db;
 // }
-import { neon } from "@neondatabase/serverless";
-import { config } from "dotenv";
-
-config({ path: "../.env" });
+import { neon, Pool } from "@neondatabase/serverless";
 
 console.log("test-env: ", process.env.test);
 
 declare global {
   var sql: ReturnType<typeof neon> | undefined;
+  var pool: Pool;
 }
 
 // Ensure DATABASE_URL is defined
@@ -27,6 +25,12 @@ if (!process.env.DATABASE_URL) {
 
 // console.log("url: ", process.env.DATABASE_URL);
 
+export const pool =
+  globalThis.pool ||
+  new Pool({
+    connectionString: process.env.DATABASE_URL,
+  });
+
 export const sql =
   globalThis.sql ||
   neon(process.env.DATABASE_URL, {
@@ -35,4 +39,5 @@ export const sql =
 
 if (process.env.NODE_ENV !== "production") {
   globalThis.sql = sql;
+  globalThis.pool = pool;
 }

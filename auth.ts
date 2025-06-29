@@ -1,6 +1,10 @@
 import NextAuth from "next-auth";
-import GitHub from "next-auth/providers/github";
+import authConfig from "./auth.config";
+import NeonAdapter from "@auth/neon-adapter";
+import { pool } from "./lib/db";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [GitHub],
+  adapter: NeonAdapter(pool),
+  session: { strategy: "jwt" },
+  ...authConfig,
 });
