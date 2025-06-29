@@ -5,6 +5,18 @@ import { pool } from "./lib/db";
 import { getUserById } from "./data/user";
 import { User } from "./schemas";
 
+declare module "next-auth" {
+  /**
+   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    user: {
+      /** The user's postal address. */
+      role: string;
+    };
+  }
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async session({ session, token }) {
@@ -13,7 +25,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       if (token.role && session.user) {
-        session.user.role = token.role;
+        session.user.role = token.role as "string";
       }
       return session;
     },
