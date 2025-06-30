@@ -35,6 +35,7 @@ const User = z.object({
   email: z.string().email(),
   password: z.string(),
   role: z.enum(["admin", "user"]),
+  emailVerified: z.date(),
 });
 export type User = z.infer<typeof User>;
 
