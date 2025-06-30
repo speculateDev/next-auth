@@ -1,10 +1,11 @@
 "use server";
 import * as z from "zod";
-import { RegisterSchema, User } from "@/schemas";
+import { RegisterSchema, Token } from "@/schemas";
 import bcrypt from "bcryptjs";
 import { sql } from "../../lib/db";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -25,6 +26,8 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   await sql`INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${hashedPassword})`;
 
   const verficationToken = await generateVerificationToken(email);
+
+  await sendVerificationEmail(verficationToken.email, verficationToken.token);
 
   return { success: "Confirmation email sent!" };
 };
