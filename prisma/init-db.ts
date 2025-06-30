@@ -46,6 +46,17 @@ async function initDB() {
   );
   `;
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS ResetToken(
+      id SERIAL PRIMARY KEY,
+      email VARCHAR(255),
+      token VARCHAR(255) UNIQUE,
+      expires TIMESTAMP,
+
+      UNIQUE(email, token)
+    )
+  `;
+
   console.log("✅ Tables created (if not exists).");
   process.exit();
 }
