@@ -1,21 +1,31 @@
 import { sql } from "@/lib/db";
+import { User } from "@/schemas/index";
 
-export const getUserByEmail = async (email: string) => {
+export const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
-    const user = await sql`SELECT * FROM users WHERE email = ${email}`;
+    const res =
+      (await sql`SELECT * FROM users WHERE email = ${email}`) as User[];
 
-    return user;
-  } catch (error) {
+    if (!res.length) {
+      return null;
+    }
+
+    return res[0];
+  } catch {
     return null;
   }
 };
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: string): Promise<User | null> => {
   try {
-    const user = await sql`SELECT * FROM users WHERE id = ${id}`;
+    const res = (await sql`SELECT * FROM users WHERE id = ${id}`) as User[];
 
-    return user;
-  } catch (error) {
+    if (!res.length) {
+      return null;
+    }
+
+    return res[0];
+  } catch {
     return null;
   }
 };
