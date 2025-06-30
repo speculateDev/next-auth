@@ -3,7 +3,6 @@ import authConfig from "./auth.config";
 import NeonAdapter from "@auth/neon-adapter";
 import { pool, sql } from "./lib/db";
 import { getUserById } from "./data/user";
-import { User } from "./schemas";
 
 declare module "next-auth" {
   /**
@@ -14,6 +13,10 @@ declare module "next-auth" {
       /** The user's postal address. */
       role: string;
     };
+  }
+
+  interface User {
+    id: string;
   }
 }
 
@@ -32,6 +35,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
 
   callbacks: {
+    async signIn({ user, account }) {
+      // Allow Oauth without email verification
+      if (account?.provider !== "credentials") return true;
+
+      const existingUser = await getUserById(user.id);
+
+      // Prevent non verifiedEmails
+      if (!existingUser?.emailVerified) return false;
+
+      //TODO: add 2FA check
+
+      return true;
+    },
+
     async session({ session, token }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
