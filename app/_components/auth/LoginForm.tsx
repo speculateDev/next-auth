@@ -52,17 +52,8 @@ export default function LoginForm() {
 
     startTransition(() => {
       login(values).then((data) => {
-<<<<<<< Updated upstream
-        setError(data.error);
-        setSuccess(data.success);
-=======
         setError(data?.error);
         setSuccess(data?.success);
->>>>>>> Stashed changes
-=======
-        setError(data?.error);
-        setSuccess(data?.success);
->>>>>>> Stashed changes
       });
     });
   };
