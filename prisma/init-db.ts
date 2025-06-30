@@ -1,9 +1,5 @@
-// import { config } from "dotenv";
-// config({ path: "../.env" });
-
-console.log("test: ", process.env.test);
-
 import { sql } from "../lib/db";
+console.log("test: ", process.env.test);
 
 async function initDB() {
   await sql`
@@ -37,6 +33,17 @@ async function initDB() {
 
       PRIMARY KEY (id)
 );
+  `;
+
+  await sql`
+  CREATE TABLE IF NOT EXISTS VerificationToken (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255),
+    token VARCHAR(255) UNIQUE,
+    expires TIMESTAMP,
+
+    UNIQUE  (email, token)
+  );
   `;
 
   console.log("✅ Tables created (if not exists).");

@@ -37,3 +37,10 @@ const User = z.object({
   role: z.enum(["admin", "user"]),
 });
 export type User = z.infer<typeof User>;
+
+export type Token = {
+  id: string;
+  email: string;
+  token: string;
+  expires: Date;
+};
