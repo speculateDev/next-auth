@@ -24,6 +24,7 @@ import FormError from "../form-error";
 import FormSuccess from "../form-success";
 import { login } from "@/app/actions/login";
 import { useState, useTransition } from "react";
+import Link from "next/link";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -101,6 +102,14 @@ export default function LoginForm() {
                       placeholder="••••••••"
                     />
                   </FormControl>
+                  <Button
+                    size="sm"
+                    variant="link"
+                    asChild
+                    className="px-0 font-normal justify-start"
+                  >
+                    <Link href="/auth/reset">Forgot password?</Link>
+                  </Button>
                   <FormMessage />
                 </FormItem>
               )}
