@@ -3,6 +3,7 @@ import authConfig from "./auth.config";
 import NeonAdapter from "@auth/neon-adapter";
 import { pool, sql } from "./lib/db";
 import { getUserById } from "./data/user";
+import { getTwoFactorConfirmationByUserId } from "./data/towFactorConfirmation";
 
 declare module "next-auth" {
   /**
@@ -44,7 +45,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Prevent non verifiedEmails
       if (!existingUser?.emailVerified) return false;
 
-      //TODO: add 2FA check
+      // 2FA check
+      if (existingUser.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+          user.id
+        );
+
+        if (!twoFactorConfirmation) return false;
+
+        // Delete two factor confirmation for next sign in
+        await sql`DELETE FROM twoFactorConfirmation WHERE id = ${twoFactorConfirmation.id}`;
+      }
 
       return true;
     },
