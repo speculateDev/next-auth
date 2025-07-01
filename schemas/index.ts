@@ -61,3 +61,8 @@ export type Token = {
   token: string;
   expires: Date;
 };
+
+export type TwoFactor = {
+  id: string;
+  userId: number;
+};
