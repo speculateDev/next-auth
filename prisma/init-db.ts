@@ -11,6 +11,7 @@ async function initDB() {
         image TEXT,
         password VARCHAR(255),
         role VARCHAR DEFAULT 'user' CHECK (role IN ('user', 'admin')),
+        "isTwoFactorEnabled" BOOLEAN DEFAULT FALSE,
 
         PRIMARY KEY (id)
     );
@@ -54,6 +55,27 @@ async function initDB() {
       expires TIMESTAMP,
 
       UNIQUE(email, token)
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS twoFactorToken (
+      id SERIAL PRIMARY KEY,
+      email VARCHAR(255),
+      token VARCHAR(255),
+      expires TIMESTAMP,
+
+      UNIQUE(email, token)
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS twoFactorConfirmation(
+      id SERIAL PRIMARY KEY,
+      'userId' INTEGER,
+
+      CONSTRAINT fk_users FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE,
+      UNIQUE(userId)
     )
   `;
 
