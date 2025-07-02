@@ -9,6 +9,7 @@ declare module "next-auth" {
       image: string;
       email: string;
       isTwoFactorEnabled: boolean;
+      isOauth: boolean;
     };
   }
 

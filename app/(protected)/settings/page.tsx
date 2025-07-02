@@ -52,6 +52,7 @@ export default function SettingsPage() {
           if (data?.success) {
             setSuccess(data.success);
             toast.success(data.success);
+            update();
           }
           if (data?.error) {
             setError(data.error);
