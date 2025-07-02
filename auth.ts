@@ -4,22 +4,7 @@ import NeonAdapter from "@auth/neon-adapter";
 import { pool, sql } from "./lib/db";
 import { getUserById } from "./data/user";
 import { getTwoFactorConfirmationByUserId } from "./data/towFactorConfirmation";
-
-declare module "next-auth" {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
-  interface Session {
-    user: {
-      /** The user's postal address. */
-      role: string;
-    };
-  }
-
-  interface User {
-    id: string;
-  }
-}
+import "./types/auth";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
@@ -68,6 +53,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (token.role && session.user) {
         session.user.role = token.role as "string";
       }
+
+      if (session.user) {
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+      }
       return session;
     },
 
@@ -78,6 +67,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (!existingUser) return token;
 
       token.role = existingUser.role;
+      token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
       return token;
     },
   },
