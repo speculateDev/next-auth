@@ -13,16 +13,16 @@ import LoginForm from "./auth/LoginForm";
 interface LoginButton {
   children: React.ReactNode;
   mode?: "modal" | "redirect";
-  aschild?: boolean;
+  asChild?: boolean;
 }
 
-export default function LoginButton({ children, mode, asChild }: LoginButton) {
+export default function LoginButton({ children, mode }: LoginButton) {
   const router = useRouter();
 
   if (mode === "modal") {
     return (
       <Dialog>
-        <DialogTrigger asChild>{children}</DialogTrigger>
+        <DialogTrigger>{children}</DialogTrigger>
         <DialogContent className="p-0 w-auto bg-transparent border-none">
           <DialogTitle>
             <LoginForm />
